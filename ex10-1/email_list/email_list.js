@@ -34,7 +34,7 @@ $(document).ready( () => {
         $("#email_2").val(email2);
         
         // validate the first name entry 
-        const firstName = $("#first_name").trim(); 
+        const firstName = $("#first_name").val().trim(); 
         if (firstName == "") {
             $("#first_name").next().text("This field is required.");
             isValid = false;
@@ -44,20 +44,21 @@ $(document).ready( () => {
         $("#first_name").val(firstName);
 
         // validate the last name entry
-        if ($("#first_name") == "") {
-            $("#last_name").next().text("This field is required.");
+         const lastName = $("#last_name").val().trim();
+        if (lastName == "") {
+            $("#last_name").next().text("This field is required. ");
             isValid = false;
         } else {
             $("#last_name").next().text("");
         }
-
+        $("#last_name").val(lastName);
         // validate the state entry
 		const state = $("#state").val().trim();
 		if (state == "") {
 			$("#state").next().text("This field is required.");
 			isValid = false;
 		} else if ( state.length != 2 ) {
-			$("#state").next().text("Use 2-character code.");
+			$("#state").next().text("Use 2 character abbreviations.");
 			isValid = false;
 		} else {
 			$("#state").next().text("");
@@ -65,12 +66,34 @@ $(document).ready( () => {
 		$("#state").val(state);
 			
 		// validate the zip-code entry
-			
+		const zipCode = $("#zip_code").val().trim();
+		if (zipCode == "") {
+			$("#zip_code").next().text("This field is required.");
+			isValid = false;
+		} else if (isNaN(zipCode)) {
+            $("#zip_code").next().text("Use only numbers.");
+            isValid = false;
+        } else if ( zipCode.length != 5 ) {
+			$("#zip_code").next().text("Use 5 digits.");
+			isValid = false;
+		} else {
+			$("#zip_code").next().text("");
+		}
+        $("#zip_code").val(zipCode);
+
 		// validate the check boxes	
+        let checkedOptions = [];
+        checkedOptions = $(":checkbox:checked");
+        if (checkedOptions.length == 0) {
+            $("#net").next().text("Please select at least one");
+            isValid = false;
+        } else {
+            $("#net").next().text("");
+        }
 						
 		// prevent the default action of submitting the form if any entries are invalid 
 		if (isValid == false) {
-
+            evt.preventDefault();
 		}
     });
 
@@ -90,4 +113,6 @@ $(document).ready( () => {
     });
 
     // move focus to first text box
+    $("#email_1").focus();
+
 });
